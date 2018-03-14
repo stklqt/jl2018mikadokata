@@ -7,6 +7,7 @@ import static java.lang.Math.sqrt;
  */
 public class PhysicalObject {
 
+    public double spaceSecond;
     public double mass;
     public double x;
     public double y;
@@ -15,13 +16,14 @@ public class PhysicalObject {
     public double radius;
 
     public PhysicalObject(double weightKilos, double x, double y, double vx,
-                          double vy, double radius) {
+                          double vy, double radius, double spaceSecond) {
         this.mass = weightKilos;
         this.x = x;
         this.y = y;
         this.vx = vx;
         this.vy = vy;
         this.radius = radius;
+        this.spaceSecond = this.spaceSecond;
     }
 
     public PhysicalObject absorb(PhysicalObject other) {

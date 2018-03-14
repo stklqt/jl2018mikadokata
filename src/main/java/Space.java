@@ -13,7 +13,7 @@ public class Space extends JFrame implements MouseWheelListener,
         MouseMotionListener, KeyListener {
     public static final double EARTH_WEIGHT = 5.9736e24;
     private static final double ASTRONOMICAL_UNIT = 149597870.7e3;
-    public static boolean IS_BOUNCING_BALLS = false;
+    public static boolean IS_BOUNCING_BALLS = true;
     static boolean IS_BREAKOUT = false; // Opens bottom, only active if IS_BOUNCING_BALLS is true
 
 
@@ -77,7 +77,8 @@ public class Space extends JFrame implements MouseWheelListener,
         space.setSize(800, 820);
 
         if (!IS_BOUNCING_BALLS) {
-            space.setStepSize(3600 * 24 * 7);
+           // space.setStepSize(3600 * 24 * 7);
+            double stepSize = (3600 * 24 * 7);
 
             double outerLimit = ASTRONOMICAL_UNIT * 20;
 
@@ -91,26 +92,28 @@ public class Space extends JFrame implements MouseWheelListener,
 
                 double vx = speedRandom * Math.sin(angle - Math.PI / 2);
                 double vy = speedRandom * Math.cos(angle - Math.PI / 2);
-                add(weightKilos, x, y, vx, vy, 1);
+                add(weightKilos, x, y, vx, vy, 1, stepSize);
             }
 
             scale = outerLimit / space.getWidth();
 
-            add(EARTH_WEIGHT * 20000, 0, 0, 0, 0, 1);
+            add(EARTH_WEIGHT * 20000, 0, 0, 0, 0, 1, stepSize);
         } else {
             nrOfObjects = 50;
-            space.setStepSize(1); // One second per iteration
+           // space.setStepSize(1); // One second per iteration
             for (int i = 0; i < nrOfObjects; i++) {
                 // radius,weight in [1,20]
                 double radiusAndWeight = 1 + 19 * Math.random();
                 //x,y in [max radius, width or height - max radius]
-                Space.add(radiusAndWeight, 20 + 760 * Math.random(), 20 + 760 * Math.random(), 3 - 6 * Math.random(), 3 - 6 * Math.random(), radiusAndWeight);
+                //stepSize auf 1, ggf auslagern in Methode
+                Space.add(radiusAndWeight, 20 + 760 * Math.random(), 20 + 760 * Math.random(), 3 - 6 * Math.random(), 3 - 6 * Math.random(), radiusAndWeight, 1);
             }
             scale = 1;
             centrex = 400;
             centrey = 390; //Must compensate for title bar
         }
         space.setVisible(true);
+
         while (true) {
             final long start = System.currentTimeMillis();
             EventQueue.invokeAndWait(new Runnable() {
@@ -139,14 +142,14 @@ public class Space extends JFrame implements MouseWheelListener,
         return random * random;
     }
 
-    public void setStepSize(double seconds) {
-        Space.seconds = seconds;
-    }
+//    public void setStepSize(double seconds) {
+//        Space.seconds = seconds;
+//    }
 
     public static PhysicalObject add(double weightKilos, double x, double y,
-                                     double vx, double vy, double radius) {
+                                     double vx, double vy, double radius, double spaceSeconds) {
         PhysicalObject physicalObject = new PhysicalObject(weightKilos, x, y,
-                vx, vy, radius);
+                vx, vy, radius, spaceSeconds);
         objects.add(physicalObject);
         return physicalObject;
     }
