@@ -8,3 +8,6 @@ Enable reuse of PhysicalObject
     - Add in Space setzt die Seconds
     - Space in setStep aktualisiert die PhysicalOpjects
     - paintPhysicalObject in Space verschieben
+    
+    - Todo extract parameter, ggf über git stash 
+    - Methode Space.waittocolor in PhysicalObject verschieben
